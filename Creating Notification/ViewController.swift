@@ -15,6 +15,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        UNUserNotificationCenter.current().delegate = self
 
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert,.sound,.badge], completionHandler: { (granted,error) in
             
@@ -41,7 +42,7 @@ class ViewController: UIViewController {
             icerik.badge = 1
             icerik.sound = UNNotificationSound.default
             
-            let tetikleme = UNTimeIntervalNotificationTrigger(timeInterval: 10, repeats: false)
+            let tetikleme = UNTimeIntervalNotificationTrigger(timeInterval: 3, repeats: false)
             
             let bildirimIstegi = UNNotificationRequest(identifier: "Bildirim Olusturma", content: icerik, trigger: tetikleme)
             
@@ -57,3 +58,9 @@ class ViewController: UIViewController {
     
 }
 
+extension ViewController:UNUserNotificationCenterDelegate{
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.alert,.sound,.badge])
+        
+    }
+}
